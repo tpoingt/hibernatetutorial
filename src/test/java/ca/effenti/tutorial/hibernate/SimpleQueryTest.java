@@ -30,7 +30,8 @@ public class SimpleQueryTest {
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect")
                 .setProperty("hibernate.show_sql", "true")
                 .setProperty("hibernate.hbm2ddl.auto", "create")
-                .addAnnotatedClass(Song.class);
+                .addAnnotatedClass(Song.class)
+                .addAnnotatedClass(Author.class);
         sessionFactory = cfg.buildSessionFactory();
     }
 
@@ -43,8 +44,9 @@ public class SimpleQueryTest {
         // now lets pull events from the database and list them
         session = sessionFactory.openSession();
         session.beginTransaction();
-        System.out.println(session.find(Song.class, 1L));
-        System.out.println(session.find(Song.class, 2L));
+        Author author1 = session.find(Author.class, 1L);
+        System.out.println(author1);
+        System.out.println(author1.getSongs());
 
         session.getTransaction().commit();
         session.close();
@@ -53,8 +55,12 @@ public class SimpleQueryTest {
     private void initSongs() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.save(new Song("Nothing else matters", LocalDate.parse("1992-04-20")));
-        session.save(new Song("House of the rising sun", LocalDate.parse("1934-06-01")));
+        Author metallica = new Author("Metallica");
+        Author theAnimals = new Author("The Animals");
+        session.save(metallica);
+        session.save(theAnimals);
+        session.save(new Song("Nothing else matters", LocalDate.parse("1992-04-20"), metallica));
+        session.save(new Song("House of the rising sun", LocalDate.parse("1964-06-01"), theAnimals));
         session.getTransaction().commit();
         session.close();
     }

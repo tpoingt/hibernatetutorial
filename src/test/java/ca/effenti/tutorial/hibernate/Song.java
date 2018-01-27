@@ -18,12 +18,17 @@ public class Song {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
+    @ManyToOne
+    @JoinColumn(name="author_id", nullable=false)
+    private Author author;
+
     public Song() {
     }
 
-    public Song(String title, LocalDate releaseDate) {
+    public Song(String title, LocalDate releaseDate, Author author) {
         this.title = title;
         this.releaseDate = releaseDate;
+        this.author = author;
     }
 
     public Long getId() {
@@ -48,6 +53,14 @@ public class Song {
 
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     @Override
