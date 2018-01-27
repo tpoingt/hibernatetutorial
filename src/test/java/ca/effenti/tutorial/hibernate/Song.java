@@ -1,14 +1,21 @@
 package ca.effenti.tutorial.hibernate;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
 import static java.util.Objects.*;
 
+@Entity
+@Table(name="SONG")
 public class Song {
 
+    @Id()
+    @GeneratedValue
     private Long id;
+    @Column(name = "title")
     private String title;
+    @Column(name = "release_date")
     private LocalDate releaseDate;
 
     public Song() {
