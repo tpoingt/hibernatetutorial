@@ -39,17 +39,14 @@ public class SimpleQueryTest {
     @SuppressWarnings("unchecked")
     public void whenExecuteQuery_givenAllSet_ThenReturnsRows() {
         this.initSongs();
-        Session session;
-
-        // now lets pull events from the database and list them
-        session = sessionFactory.openSession();
-        session.beginTransaction();
-        List<Song> result = session.createQuery("from Song").list();
+        EntityManager entityManager =  sessionFactory.openSession();
+        entityManager.getTransaction().begin();
+        List<Song> result = entityManager.createQuery("from Song").getResultList();
         assertEquals(2, result.size());
         result.forEach(System.out::println);
 
-        session.getTransaction().commit();
-        session.close();
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     private void initSongs() {
