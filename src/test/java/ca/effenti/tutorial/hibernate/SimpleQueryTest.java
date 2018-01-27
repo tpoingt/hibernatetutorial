@@ -44,9 +44,8 @@ public class SimpleQueryTest {
         // now lets pull events from the database and list them
         session = sessionFactory.openSession();
         session.beginTransaction();
-        Author author1 = session.find(Author.class, 1L);
-        System.out.println(author1);
-        System.out.println(author1.getSongs());
+        List songs = session.createQuery("from ca.effenti.tutorial.hibernate.Song s where s.releaseDate > '1990-01-01'").list();
+        songs.forEach(System.out::println);
 
         session.getTransaction().commit();
         session.close();
