@@ -43,9 +43,8 @@ public class SimpleQueryTest {
         // now lets pull events from the database and list them
         session = sessionFactory.openSession();
         session.beginTransaction();
-        List<Song> result = session.createQuery("from Song").list();
-        assertEquals(2, result.size());
-        result.forEach(System.out::println);
+        System.out.println(session.find(Song.class, 1L));
+        System.out.println(session.find(Song.class, 2L));
 
         session.getTransaction().commit();
         session.close();
