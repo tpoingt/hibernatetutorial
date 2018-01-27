@@ -41,9 +41,8 @@ public class SimpleQueryTest {
         this.initSongs();
         EntityManager entityManager =  sessionFactory.openSession();
         entityManager.getTransaction().begin();
-        List<Song> result = entityManager.createQuery("from Song").getResultList();
-        assertEquals(2, result.size());
-        result.forEach(System.out::println);
+        System.out.println(entityManager.find(Song.class, 1L));
+        System.out.println(entityManager.find(Song.class, 2L));
 
         entityManager.getTransaction().commit();
         entityManager.close();
