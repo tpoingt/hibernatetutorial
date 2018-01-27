@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -52,12 +53,12 @@ public class SimpleQueryTest {
     }
 
     private void initSongs() {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(new Song("Nothing else matters", LocalDate.parse("1992-04-20")));
-        session.save(new Song("House of the rising sun", LocalDate.parse("1934-06-01")));
-        session.getTransaction().commit();
-        session.close();
+        EntityManager entityManager = sessionFactory.openSession();
+        entityManager.getTransaction().begin();
+        entityManager.persist(new Song("Nothing else matters", LocalDate.parse("1992-04-20")));
+        entityManager.persist(new Song("House of the rising sun", LocalDate.parse("1934-06-01")));
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @After
