@@ -10,6 +10,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,6 +37,26 @@ public class SimpleQueryTest {
                 .addAnnotatedClass(Author.class);
         sessionFactory = cfg.buildSessionFactory();
         this.initSongs();
+    }
+
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void whenGetCriteria_ThenReturnsNinetiesSongs() {
+        Session session;
+
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Song> criteria = builder.createQuery( Song.class );
+        Root<Song> songRoot = criteria.from( Song.class );
+        criteria.select( songRoot );
+        criteria.where( builder.between(songRoot.get( Song_.releaseDate ), LocalDate.parse("1990-01-01"), LocalDate.parse("1999-12-31") ) );
+        List<Song> songs = session.createQuery( criteria ).getResultList();
+        songs.forEach(System.out::println);
+
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Test
