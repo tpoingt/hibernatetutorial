@@ -44,8 +44,10 @@ public class SimpleQueryTest {
         // now lets pull events from the database and list them
         session = sessionFactory.openSession();
         session.beginTransaction();
-        List songs = session.createQuery("from ca.effenti.tutorial.hibernate.Song s where s.releaseDate > '1990-01-01'").list();
-        songs.forEach(System.out::println);
+//        List songs = session.createQuery("from ca.effenti.tutorial.hibernate.Song s where s.releaseDate > '2000-01-01'").list();
+//        songs.forEach(System.out::println);
+        List<Author> authors = session.createQuery("select a from ca.effenti.tutorial.hibernate.Author a join a.songs s where s.releaseDate > '2000-01-01'").list();
+        authors.forEach(System.out::println);
 
         session.getTransaction().commit();
         session.close();
@@ -55,11 +57,15 @@ public class SimpleQueryTest {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         Author metallica = new Author("Metallica");
+        Author muse = new Author("Muse");
         Author theAnimals = new Author("The Animals");
         session.save(metallica);
         session.save(theAnimals);
+        session.save(muse);
         session.save(new Song("Nothing else matters", LocalDate.parse("1992-04-20"), metallica));
         session.save(new Song("House of the rising sun", LocalDate.parse("1964-06-01"), theAnimals));
+        session.save(new Song("Feeling good", LocalDate.parse("2005-05-12"), muse));
+        session.save(new Song("Nea born", LocalDate.parse("2001-08-20"), muse));
         session.getTransaction().commit();
         session.close();
     }
