@@ -38,6 +38,20 @@ public class SimpleQueryTest {
 
     @Test
     @SuppressWarnings("unchecked")
+    public void whenGetNamedQuery_ThenReturnsDeadAuthors() {
+        Session session;
+
+        // now lets pull events from the database and list them
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<Author> reports = session.createNamedQuery("Author.findDead", Author.class).list();
+        reports.forEach(System.out::println);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+    @Test
+    @SuppressWarnings("unchecked")
     public void whenGetAuthorStats_ThenReturnsStats() {
         Session session;
 
@@ -72,9 +86,9 @@ public class SimpleQueryTest {
     private void initSongs() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Author metallica = new Author("Metallica");
-        Author muse = new Author("Muse");
-        Author theAnimals = new Author("The Animals");
+        Author metallica = new Author("Metallica", true);
+        Author muse = new Author("Muse", true);
+        Author theAnimals = new Author("The Animals", false);
         session.save(metallica);
         session.save(theAnimals);
         session.save(muse);
