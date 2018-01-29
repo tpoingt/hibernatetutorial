@@ -33,12 +33,28 @@ public class SimpleQueryTest {
                 .addAnnotatedClass(Song.class)
                 .addAnnotatedClass(Author.class);
         sessionFactory = cfg.buildSessionFactory();
+        this.initSongs();
     }
 
     @Test
     @SuppressWarnings("unchecked")
+    public void whenGetAuthorStats_ThenReturnsStats() {
+        Session session;
+
+        // now lets pull events from the database and list them
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<AuthorStatReport> reports = session.createQuery("select new ca.effenti.tutorial.hibernate.AuthorStatReport(a.name, count(s)) from ca.effenti.tutorial.hibernate.Author a join a.songs s group by a.name").list();
+        reports.forEach(System.out::println);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
+
+    @Test
+    @SuppressWarnings("unchecked")
     public void whenExecuteQuery_givenAllSet_ThenReturnsRows() {
-        this.initSongs();
         Session session;
 
         // now lets pull events from the database and list them
