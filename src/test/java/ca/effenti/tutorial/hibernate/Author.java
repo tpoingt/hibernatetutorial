@@ -6,19 +6,24 @@ import java.util.Set;
 
 @Entity
 @Table(name = "AUTHOR")
+@NamedQuery(name="Author.findDead", query="SELECT a FROM Author a where a.alive=false")
 public class Author {
     @Id
     @GeneratedValue
     private Long id;
     @Column(name = "name")
     private String name;
+    @Column(name="alive")
+    private boolean alive;
     @OneToMany(mappedBy = "author")
     private Set<Song> songs;
 
+
     public Author() {}
 
-    public Author(String name) {
+    public Author(String name, boolean alive) {
         this.name = name;
+        this.alive = alive;
     }
 
     public Long getId() {
@@ -43,6 +48,14 @@ public class Author {
 
     public void setSongs(Set<Song> songs) {
         this.songs = songs;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     @Override
