@@ -35,26 +35,16 @@ public class SimpleQueryTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void whenExecuteQuery_givenAllSet_ThenReturnsRows() {
-        this.initSongs();
+    public void whenTestConnection_givenAllSet_ThenReturnsOne() {
         Session session;
 
         // now lets pull events from the database and list them
         session = sessionFactory.openSession();
         session.beginTransaction();
-        List<Song> result = session.createQuery("from Song").list();
-        assertEquals(2, result.size());
+        List result = session.createNativeQuery("SELECT 1").list();
         result.forEach(System.out::println);
+        assertEquals(result.get(0), 1);
 
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    private void initSongs() {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(new Song("Nothing else matters", LocalDate.parse("1992-04-20")));
-        session.save(new Song("House of the rising sun", LocalDate.parse("1934-06-01")));
         session.getTransaction().commit();
         session.close();
     }
