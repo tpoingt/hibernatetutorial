@@ -2,9 +2,6 @@ package ca.effenti.tutorial.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.Before;
@@ -51,6 +48,7 @@ public class SimpleQueryTest {
 
         session.getTransaction().commit();
         session.close();
+        assertEquals(2, authors.size());
     }
 
     private void initSongs() {
