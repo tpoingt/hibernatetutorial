@@ -2,9 +2,6 @@ package ca.effenti.tutorial.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.Before;
@@ -76,11 +73,13 @@ public class SimpleQueryTest {
         session.beginTransaction();
 //        List songs = session.createQuery("from ca.effenti.tutorial.hibernate.Song s where s.releaseDate > '2000-01-01'").list();
 //        songs.forEach(System.out::println);
-        List<Author> authors = session.createQuery("select a from ca.effenti.tutorial.hibernate.Author a join a.songs s where s.releaseDate > '2000-01-01'").list();
+        List<Author> authors = session.createQuery("select a from Author a join a.songs s where s.releaseDate > '2000-01-01'").list();
         authors.forEach(System.out::println);
 
         session.getTransaction().commit();
         session.close();
+
+        assertEquals(2, authors.size());
     }
 
     private void initSongs() {
