@@ -38,7 +38,8 @@ public class SimpleQueryTest {
         Session session = sessionFactory.openSession();
         List result = session.createNativeQuery("SELECT 1").list();
         result.forEach(System.out::println);
-        assertEquals(result.get(0), 1);
+        assertEquals(1, result.get(0));
+        session.close();
     }
 
     @After
