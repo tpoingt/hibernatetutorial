@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SimpleQueryTest {
     private SessionFactory sessionFactory;
@@ -34,11 +35,11 @@ public class SimpleQueryTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void whenTestConnection_givenAllSet_ThenReturnsOne() {
+    public void whenListSongs_givenNoData_ThenReturnsEmptyList() {
         Session session = sessionFactory.openSession();
-        List result = session.createNativeQuery("SELECT 1").list();
+        List result = session.createNativeQuery("SELECT * FROM SONG").list();
         result.forEach(System.out::println);
-        assertEquals(result.get(0), 1);
+        assertTrue(result.isEmpty());
     }
 
     @After
