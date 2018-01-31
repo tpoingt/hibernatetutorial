@@ -2,18 +2,14 @@ package ca.effenti.tutorial.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SimpleQueryTest {
     private SessionFactory sessionFactory;
@@ -37,26 +33,13 @@ public class SimpleQueryTest {
     @Test
     @SuppressWarnings("unchecked")
     public void whenExecuteQuery_givenAllSet_ThenReturnsRows() {
-        this.initSongs();
         Session session;
 
         // now lets pull events from the database and list them
         session = sessionFactory.openSession();
-        session.beginTransaction();
-        List<Song> result = session.createQuery("from Song").list();
-        assertEquals(2, result.size());
+        List result = session.createNativeQuery("SELECT * FROM SONG").list();
         result.forEach(System.out::println);
-
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    private void initSongs() {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(new Song("Nothing else matters", LocalDate.parse("1992-04-20")));
-        session.save(new Song("House of the rising sun", LocalDate.parse("1934-06-01")));
-        session.getTransaction().commit();
+        assertTrue(result.isEmpty());
         session.close();
     }
 
