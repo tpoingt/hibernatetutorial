@@ -28,8 +28,7 @@ public class SimpleQueryTest {
                 .setProperty("hibernate.connection.pool_size", "1")
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect")
                 .setProperty("hibernate.show_sql", "true")
-                .setProperty("hibernate.hbm2ddl.auto", "create")
-                .addResource("Song.hbm.xml");
+                .setProperty("hibernate.hbm2ddl.auto", "create");
         sessionFactory = cfg.buildSessionFactory();
     }
 
@@ -40,13 +39,11 @@ public class SimpleQueryTest {
 
         // now lets pull events from the database and list them
         session = sessionFactory.openSession();
-        session.beginTransaction();
         List result = session.createNativeQuery("SELECT 1").list();
         result.forEach(System.out::println);
-        assertEquals(result.get(0), 1);
 
-        session.getTransaction().commit();
         session.close();
+        assertEquals(1, result.get(0));
     }
 
     @After
